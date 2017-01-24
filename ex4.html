@@ -1,0 +1,46 @@
+<html>
+<head>
+<style>
+body {
+margin: 0;
+}
+canvas {
+position: absolute;
+width: 100%;
+height: 100%;
+}
+</style>
+</head>
+<body>
+<canvas id='canvas'></canvas>
+<script src='KeepDraw.js'></script>
+<script>
+var vel = 1;
+var stage = new KeepDraw.Stage({
+width: innerWidth,
+height: innerHeight,
+canvas: 'canvas',
+fill: '#00afff'
+});
+var poly = new KeepDraw.Polygon({
+x: innerWidth / 24,
+y: innerHeight / 2,
+sides: 5,
+strokeColor: '#fff',
+radius: innerHeight / 3,
+color: 'white',
+stage: stage
+});
+var tween = new KeepDraw.Tween(poly, {
+	age: 40,
+	end: 5000,
+	attrs: {
+      x: innerWidth,
+      opacity: 0
+	}
+});
+tween.play();
+var anim = new KeepDraw.Animation(stage);
+</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<html>
+<head>
+<style>
+body {
+margin: 0;
+}
+canvas {
+position: absolute;
+width: 100%;
+height: 100%;
+}
+</style>
+</head>
+<body>
+<canvas id='canvas'></canvas>
+<script src='KeepDraw.js'></script>
+<script>
+//создаем контейнер
+var stage = new KeepDraw.Stage({
+width: innerWidth,
+height: innerHeight,
+canvas: 'canvas',
+fill: '#00afff'
+});
+//создаем фигуру
+var circle = new KeepDraw.Circle({
+x: innerWidth / 2,
+y: innerHeight / 2,
+radius: innerHeight / 6,
+color: 'rgba(255, 255, 255, 0.5)',
+strokeColor: 'white',
+shadowWidth: 100,
+strokeWidth: 20,
+shadowColor: 'rgba(0,0,0,0.5)',
+stage: stage
+});
+</script>
+</body>
+</html>
