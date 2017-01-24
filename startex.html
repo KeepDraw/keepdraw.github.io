@@ -1,0 +1,155 @@
+Всем привет. В этой статье речь пойдет о библиотеке для рисования на canvas - KeepDraw.
+Roundraw - это фреймворк для работы с canvas 2d с поддержкой событий и анимации.
+Отличительные черты:
+1. API в стиле ООП;
+2. События для мыши, клавиатуры и сенсорных экранов;
+3. Поддержка анимации;
+4. Рисование кривых безье по точкам;
+5. Множество функций, проверяющих пересечения фигур и точек;
+6. Заливка фигур градиентами и изображениями;
+7. Шаблоны объектов - линия, прямоугольник, текст, многоугольник и круг.
+8. Поддержка мобильных устройств.
+9. Сглаживание фигур с использование кривых безье.
+10. Легковесный. Сжатая версия весит 15 килобайт.
+
+Введение
+Главным объектом на холсте является Stage.
+В нем указывается ширина холста, идентификатор div блока (canvas), высота и фон. В Stage.childs включены все видимые фигуры на холсте. К каждому холсту можно указать по одному объекту Stage. Если вы указали stage и фигуры, можно приступать к анимации или событиям.
+
+пример кода:
+
+//создаем контейнер
+var stage = new KeepDraw.Stage({
+width: innerWidth,
+height: innerHeight,
+canvas: 'canvas',
+fill: '#00afff'
+});
+
+//создаем фигуру
+var circle = new KeepDraw.Circle({
+x: innerWidth / 2,
+y: innerHeight / 2,
+radius: innerHeight / 3,
+color: 'white',
+stage: stage
+});
+
+Основные фигуры
+В KeepDraw имеются: прямоугольник (Rect), правильный многоугольник (Polygon), Текст (Text), Линия или собственная фигура (line).
+
+Пример собственной фигуры
+var stage = new KeepDraw.Stage({
+width: innerWidth,
+height: innerHeight,
+canvas: 'canvas',
+fill: '#00afff'
+});
+var line = new KeepDraw.Line({
+x: 100,
+y: 50,
+segments: [[0,0,-70,0,-70,100],[0,100,70,100,130,10],[200,10,270,10,270,108.94],[200,100,130,100,70,0.3],[0,0,-70,0]],
+color: 'white',
+strokeWidth: 5,
+strokeColor: '#30ccff',
+stage: stage
+});
+
+Стили
+Ко всем фигурам можно применить следующие значения:
+color - Заливка (цвет, градиент или изображение);
+strokeColor - цвет обводки;
+strokeWidth - ширина обводки;
+shadowColor: цвет тени;
+shadowWidth: ширина тени;
+lineCap - обводка сегментов линии (обычная - butt, прямоугольная - square, овальная - round;
+lineJoin - обводка концов линии (обычная - mitter, прямоугольная - bevel, овальная - round;
+ShadowOffsetX - сдвиг тени по оси x;
+ShadowOffsetY - сдвиг тени по оси y;
+font - шрифт текста (размер и шрифт);
+opacity - непрозрачность (0 - 1);
+
+Пример:
+var stage = new KeepDraw.Stage({
+width: innerWidth,
+height: innerHeight,
+canvas: 'canvas',
+fill: '#00afff'
+});
+
+var circle = new KeepDraw.Circle({
+x: innerWidth / 2,
+y: innerHeight / 2,
+radius: innerHeight / 6,
+color: 'rgba(255, 255, 255, 0.5)',
+strokeColor: 'white',
+shadowWidth: 100,
+strokeWidth: 20,
+shadowColor: 'rgba(0,0,0,0.5)',
+stage: stage
+});
+
+Дополнительные функции
+У всех фигур есть свои функции:
+toLine() - преобразовать любую фигуру в линию;
+smooth(сила 0 - 3) - сглаживание с помощью безье, применимо только к линии;
+endPoints() - возвращает массив крайних точек: [верхняя[x, y], нижняя[x, y], левая[x, y], правая[x, y]];
+clone() - возвращает клон фигуры;
+star() - делает линию похожей на звезду;
+floor() - округляет все значения в объекте фигуры;
+setAttrs(объект) - присваивает фигуре значения объекта;
+simplify(периодичность) - равномерно удаляет сегменты линии;
+reflect(по ширине, по высоте), true или false - отражает линию;
+inScreen() - определяет, видна ли фигура на экране;
+inDistance(minX, minY, maxX, maxY) - определяет, находится ли фигура на определенной дистанции;
+rotate(градусы, [x, y]) - поворачивает линию вокруг своей оси или точки;
+
+События
+К фигурам можно подписать события (click, mousedown, touchstart и другие);
+var stage = new KeepDraw.Stage({
+width: innerWidth,
+height: innerHeight,
+canvas: 'canvas',
+fill: '#00afff'
+});
+var circle = new KeepDraw.Circle({
+x: innerWidth / 2,
+y: innerHeight / 2,
+radius: innerHeight / 3,
+color: 'white',
+stage: stage
+});
+circle.on('mousedown', function() {
+circle.color = (circle.color == '#fff') ? '#333' : '#fff';
+circle.draw(circle);
+});
+
+Анимация
+Установить анимацию можно несколькими способами:
+Через Stage.Animation:
+
+stage.draw = function(diff) {
+if (poly.x > innerWidth * 0.88) vel = -1;
+if (poly.x < innerWidth * 0.12) vel = 1;
+poly.rotate(vel * diff);
+poly.x += innerHeight / 150 * vel;
+};
+var anim = new KeepDraw.Animation(stage);
+
+Или через Tween:
+
+var tween = new KeepDraw.Tween(poly, {
+	age: 40,
+	end: 5000,
+	attrs: {
+      x: innerWidth,
+      opacity: 0
+	}
+});
+tween.play();
+var anim = new KeepDraw.Animation(stage);
+
+Заключение
+Онлайн редактор рисунков на основе KeepDraw - http://roundraw.github.io;
+github: 
+Домашняя страница: http://keepdraw.github.io

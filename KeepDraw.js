@@ -15,7 +15,6 @@
       Animation: function(arg) {
         this.enabled = false;
         var core;
-        if (arg.draw) {
           var start = this.start = function() {
             var date = new Date();
             var time = date.getTime();
@@ -23,7 +22,7 @@
             KeepDraw.Utils.draw(arg);
             this.enabled = true;
             lastTime = time;
-            arg.draw(diff);
+            if (arg.draw) arg.draw(diff);
             core = this.core = setAnimation(start);
           };
           this.start();
@@ -31,10 +30,10 @@
             this.enabled = false;
             clearAnimation(core);
           };
-        }
       },
       Utils: {
         draw: function(arg) {
+var crush = !1;
             if (arg.fill) {
             arg.ctx.fillStyle = arg.fill.grd || arg.fill;
             arg.ctx.fillRect(0, 0, arg.width, arg.height);
@@ -42,10 +41,23 @@
             else arg.ctx.clearRect(0, 0, arg.width, arg.height);
           for (var i = 0; i < arg.childs.length; i++) {
             if (arg.childs[i]) arg.childs[i].draw(arg.childs[i]);
+		else crush = !0;
           }
+if (crush) {
+var ch = [];
+for (var i = 0; i < arg.childs.length; i++) {	
+ if (arg.childs[i]) ch.push(arg.childs[i]);
+}
+stage.childs = ch;
+stage.setIndex();
+}
         },
             lineDraw: function(arg, point) {
+try {
+
                 arg.stage.ctx.save();
+	if (!arg.segments) arg.segments = [[0,0]];
+	if (!arg.segments[0]) arg.segments = [[0,0]];
             var seg = arg._segments || arg.segments;
             KeepDraw.Utils.setStyle(arg);
             arg.stage.ctx.beginPath();
@@ -53,6 +65,16 @@
             if (!arg.y) arg.y = 0;
             arg.stage.ctx.translate(arg._x || arg.x, arg._y || arg.y);
 	    arg.stage.ctx.lineTo(seg[0][0] + 0.5, seg[0][1] + 0.5);
+var w = (arg.width != arg._width) ? (arg.width +0.5) / (arg._width + 0.5 ) : 1;
+var h = (arg.height != arg._height) ? (arg.height+0.5) / (arg._height + 0.5 ) : 1;
+if (w != 1|| h != 1) {
+for (var i=0; i<seg.length;i++) {
+seg[i][0] *= w;
+seg[i][1] *= h;
+if (seg[i][3]) seg[i][2] *= w, seg[i][3] *= h;
+if (seg[i][5]) seg[i][4] *= w, seg[i][5] *= h;
+}
+}
             for (var i = 1; i < seg.length; i++) {
               if (seg[i - 1][5]) {
                 arg.stage.ctx.bezierCurveTo((seg[i-1][2] + 0.5) >> 0, (seg[i-1][3] + 0.5) >> 0, (seg[i-1][4] + 0.5) >> 0, seg[i - 1][5], (seg[i][0] + 0.5) >> 0, (seg[i][1] + 0.5) >> 0);
@@ -65,10 +87,14 @@
             if (arg.closed) {
               arg.stage.ctx.closePath();
             }
+var ends = KeepDraw.Utils.endPoints(arg);
+arg.width = arg._width = ends[3][0]-ends[2][0];
+arg.height = arg._height = ends[1][1]-ends[0][1];
 if (point)  var inter = arg.stage.ctx.isPointInPath(point[0], point[1]);
            KeepDraw.Utils.drawPath(arg, this.path),
             arg.stage.ctx.restore();
 if (point) return inter;
+} catch(err) { console.log(arg) }
           },
         drawPath: function(arg) {
           if (arg.fill || arg.color) arg.stage.ctx.fill();
@@ -86,6 +112,17 @@ if (point) return inter;
           }
           return copy;
         },
+endPoints: function(obj) {
+	var seg = obj.segments;
+	var top = [99999, 99999], left = [99999, 99999], right = [-99999, -99999], bottom = [-99999, -9999999];
+	for (var i = 0; i < seg.length; i++) {
+	if (seg[i][0] < left[0]) left = seg[i];
+	if (seg[i][1] < top[1]) top = seg[i];
+	if (seg[i][1] > bottom[1]) bottom = seg[i];
+	if (seg[i][0] > right[0]) right = seg[i];
+	}
+	return [top, bottom, left, right];
+},
         percent: function(arg) {
           return arg.split('%')[0] * 1;
         },
@@ -140,10 +177,14 @@ if (point) return inter;
               if (seg.length > 2) for (var i = 0; i < seg.length; i++) {
                   var im = (i < 1) ? seg[seg.length-2] : seg[i-1];
                   var ib = (i > seg.length - 2) ? seg[1] : seg[i+1];
-				im[4] = ((ib[0] + seg[i][0]) / 2 + (seg[i][0] + (seg[i][0] - ib[0]) * pow + ib[0]) / 2)  /  2,
-				im[5] = ((ib[1] + seg[i][1]) / 2 + (seg[i][1] + (seg[i][1] - ib[1]) * pow + ib[1]) / 2) / 2;
-				seg[i][2] = ((im[0] + seg[i][0]) / 2 + (seg[i][0] + (seg[i][0] - im[0]) * pow + im[0]) / 2) /  2;
-				seg[i][3] = ((im[1] + seg[i][1]) / 2 + (seg[i][1] + (seg[i][1] - im[1]) * pow + im[1]) / 2) / 2;
+				var a = ((ib[0] + seg[i][0]) / 2 + (seg[i][0] + (seg[i][0] - ib[0]) * pow + ib[0]) / 2),
+				b = ((ib[1] + seg[i][1]) / 2 + (seg[i][1] + (seg[i][1] - ib[1]) * pow + ib[1]) / 2),
+				c = ((im[0] + seg[i][0]) / 2 + (seg[i][0] + (seg[i][0] - im[0]) * pow + im[0]) / 2),
+				d = ((im[1] + seg[i][1]) / 2 + (seg[i][1] + (seg[i][1] - im[1]) * pow + im[1]) / 2);
+				im[4] = ((seg[i][0] - c + seg[i][0]) + a + seg[i][0]) / 3;
+				im[5] = ((seg[i][1] - d + seg[i][1]) + b + seg[i][1]) / 3;
+				seg[i][2] = ((seg[i][0] - a + seg[i][0]) + c + seg[i][0]) / 3;
+				seg[i][3] = ((seg[i][1] - b + seg[i][1]) + d + seg[i][1]) / 3;
 			}
 			obj.segments = seg;
           };
@@ -172,15 +213,16 @@ if (point) return inter;
             }
             obj.segments = segs;
             };
-          obj.wind = function(power1, power2) {
-            var seg2 = [];
-            for (var i = 0, j = 1; j < seg.length; j++, i++) {
-              var seg3 = [(seg[i][0] + seg[j][0]) / 2 + power1, (seg[i][1] + seg[j][1]) / 2 + power2];
-              seg2.push([seg[i][0], seg[i][1]], seg3, [seg[j][0], seg[j][1]]);
-            }
-            obj._segments = seg2;
-          };
-
+obj.toLine = function() {
+if (obj.cons == KeepDraw.Line) return;
+var o = obj;
+obj.stage.childs[obj.index] = undefined;
+var s = (obj.cons == KeepDraw.Circle) ? 1 : 0;
+obj = new KeepDraw.Line(o);
+obj.segments = o._segments;
+if (s) elem.smooth(Math.PI);
+return obj;
+}
           obj.star = function() {
             var seg2 = [];
             for (var i = 0, j = 1; j < seg.length; j++, i++) {
@@ -201,16 +243,7 @@ if (point) return inter;
             }
             obj.segments = seg2;
           };
-	obj.endPoints = function() {
-	var top = [0, 0], left = [0, 0], right = [0, 0], bottom = [0, 0];
-	for (var i = 0; i < seg.length; i++) {
-	if (seg[i][0] < left[0]) left = seg[i];
-	if (seg[i][1] < top[1]) top = seg[i];
-	if (seg[i][1] > bottom[1]) bottom = seg[i];
-	if (seg[i][0] > right[0]) right = seg[i];
-	}
-	return [top, bottom, left, right];
-};
+	obj.endPoints = KeepDraw.Utils.endPoints;
 obj.inScreen = function() {
   if ((obj._x || obj.x) > 0 && (obj._x || obj.x) < innerWidth && (obj._y || obj.y) > 0 && (obj._y || obj.y) < innerHeight) return true;
   else return false;
@@ -228,6 +261,7 @@ if (obj.group) {
         var canvas = this.canvas = document.getElementById(arg.canvas);
         this.width = this.canvas.width = arg.width;
         this.height = this.canvas.height = arg.height;
+	this.fill = arg.fill;
         this.ctx = canvas.getContext('2d');
         this.ctx.lineWidth = this.strokeWidth = arg.strokeWidth || 1;
         this.ctx.strokeStyle = this.strokeColor = arg.strokeColor || '#000000';
@@ -240,7 +274,7 @@ if (obj.group) {
         this.setIndex = function() {
           var c = childs.length;
           for (var i = 0; i < c; i++) {
-            childs[i].index = i;
+            if (childs[i]) childs[i].index = i;
           }
         };
         var events = this.events = {
@@ -273,6 +307,7 @@ if (obj.group) {
           var canvas = this.canvas = document.getElementById(arg.canvas);
           this.ctx = canvas.getContext('2d');
         };
+	KeepDraw.Utils.draw(this);
       },
       Line: function(arg) {
         var events = this.events = {};
@@ -287,6 +322,7 @@ if (obj.group) {
           delete events(e);
         };
         for (var key in arg) this[key] = arg[key];
+arg.width = arg._width = arg.height = arg._height = 0;
         if (arg.stage) {
           this.draw = KeepDraw.Utils.lineDraw;
           this.draw(arg);
@@ -296,13 +332,6 @@ if (obj.group) {
           this.index = arg.stage.childs.length;
           arg.stage.childs.push(this);
         }
-        this.resize = function(w, h) {
-          var seg = this.segments;
-          for (var i = 0; i < seg.length; i++) {
-            seg[i][0] = seg[i][0] * w;
-            seg[i][1] = seg[i][1] * h;
-          }
-        };
         KeepDraw.Utils.setFuncs(this);
       },
       Rect: function(arg) {
@@ -324,8 +353,9 @@ for (var key in arg) this[key] = arg[key];
             if (!arg.x) arg.x = 0;
             if (!arg.y) arg.y = 0;
 	if (arg.segments) {
-	arg.width = arg.segments[1][0] - arg.segments[0][0];
-	arg.height = arg.segments[1][1] - arg.segments[0][1];
+if (arg.height != arg._height || arg.width != arg._width) arg.segments[1] = [arg.width, arg.height];
+	arg.width = arg._width = arg.segments[1][0] - arg.segments[0][0];
+	arg.height = arg._height = arg.segments[1][1] - arg.segments[0][1];
 	}
             arg._segments = [
               [0, 0],
@@ -351,7 +381,7 @@ if (point) return inter;
           };
           this.draw(arg);
         }
-        this.cons = KeepDraw.Line;
+        this.cons = KeepDraw.Rect;
         if (arg.stage) {
           this.index = arg.stage.childs.length;
           arg.stage.childs.push(this);
@@ -421,6 +451,10 @@ for (var key in arg) this[key] = arg[key];
             arg.stage.ctx.beginPath();
             arg.stage.ctx.translate((arg._x || arg.x) + ((arg.segments) ? arg.segments[0][0] : 0), ( arg._y || arg.y) + ((arg.segments) ? arg.segments[0][1] : 0));
 	    arg.stage.ctx.arc(0, 0, (0.5 + arg.radius)>>0, 0, Math.PI * 2);
+var r = arg.radius;
+var pi = 3.55;
+	    arg._segments = [[-r + r / pi,-r + r / pi], [r - r / pi,-r + r / pi], [r - r / pi, r - r / pi], [-r + r / pi, r - r / pi], [-r + r / pi,-r + r / pi]];
+	    
             arg.stage.ctx.closePath();
 if (point)  var inter = arg.stage.ctx.isPointInPath(point[0], point[1]);
            KeepDraw.Utils.drawPath(arg, this.path),
@@ -467,6 +501,7 @@ if (point) return inter;
           seg.push([j[0], j[1]]);
         }
                 seg.push([seg[0][0], seg[0][1]]);
+	if (!arg.segments) arg.segments = arg._segments;
             deg = Math.atan2(arg.segments[1][1] - seg[0][1] - arg.segments[0][1], arg.segments[1][0] - seg[0][0] - arg.segments[0][0]) * 2  + (Math.PI) / arg.sides;
             for (var i = 0; i < seg.length; i++) {
               var x = seg[i][0] * Math.cos(deg) - seg[i][1] * Math.sin(deg);
@@ -514,7 +549,7 @@ if (point) return inter;
         KeepDraw.Utils.setFuncs(this);
           this.draw(this);
         }
-        this.cons = KeepDraw.Line;
+        this.cons = KeepDraw.Polygon;
         this.resize = function(w, h) {
           var seg = this.segments;
           for (var i = 0; i < seg.length; i++) {
@@ -704,7 +739,9 @@ if (point) return inter;
           var start = Date.now(),
           old = Date.now();
           for (var key in arg.attrs) {
+if (!obj[key]) obj[key] = obj.stage[key];
             steps[key] = obj[key] - arg.attrs[key];
+console.log(key, obj[key], arg.attrs[key]);
           }
           draw = function(arg) {
               var now = Date.now();
