@@ -269,8 +269,8 @@
    },
    Stage: function(arg) {
      var canvas = this.canvas = document.getElementById(arg.canvas);
-     this.width = this.canvas.width = arg.width;
-     this.height = this.canvas.height = arg.height;
+     this.width = this.canvas.width = arg.width * window.devicePixelRatio;
+     this.height = this.canvas.height = arg.height * window.devicePixelRatio;
      this.fill = arg.fill;
      this.ctx = canvas.getContext('2d');
      this.ctx.lineWidth = this.strokeWidth = arg.strokeWidth || 1;
