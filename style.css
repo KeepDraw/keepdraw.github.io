@@ -1,10 +1,11 @@
 body {
   text-align: center;
   margin: 0;
-  color: #fff;
+  background: #f1f4f9;
+  color: #333;
+  font-size: larger;
   font-family: Segoe UI Light, Ubuntu Light, Arial;
 }
-
 #canvas {
   position: absolute;
   width: 100%;
@@ -18,10 +19,10 @@ body {
   width: 100%;
   height: 300px;
   background: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.3) !important;
+  box-shadow: 0 0 50px 0 rgba(7, 120, 255, 0.5) !important;
 }
 #col {
-background: #10ccff;
+background: #518CEF;
 }
 .header p {
   font-size: 75px;
@@ -29,16 +30,12 @@ background: #10ccff;
     color: rgba(255, 255, 255, 0.7);
 }
 
-* {
-  transition: 0.2s;
-}
-
 .bar a {
-  text-decoration: none;
   color: #fff;
   border-right: solid 1px rgba(0, 50, 255, 0.1);
   box-shadow: inset 0 0px 0px 20px transparent;
   height: 30px;
+  text-decoration: none;
   padding: 10px;
   width: 150px;
   display: inline-block
@@ -50,12 +47,43 @@ background: #10ccff;
 
 .title {
   float: left;
-  font-size: larger;
   background: rgba(0, 50, 255, 0.5);
   border-top-right-radius: 50px;
   border-bottom-right-radius: 50px;
 }
-
+#left {
+    float: left;
+    height: 1000px;
+    background: #518CEF;
+    box-shadow: 10px 0 50px -10px rgba(7, 120, 255, 0.5);
+    position: fixed;
+}
+#left a {
+    text-decoration: none;
+    display: block;
+    color: #f1f4f9;
+    padding: 20px;
+    box-shadow: inset 0 -1px 0px 0 #80AFFF;
+}
+#left p {
+    text-decoration: none;
+    display: block;
+    color: #f1f4f9;
+    background: #67A0FF;
+    padding: 20px;
+    margin: 0;
+    box-shadow: inset 0 -3px 0px 0 #B2CFFF;
+}
+#left a:hover {
+    box-shadow: inset 0 -70px 10px 0 #80AFFF;
+}
+#left a:clicked {
+    box-shadow: inset 0 -70px 10px 0 #80AFFF;
+}
+#main {
+    margin: 50px;
+    margin-left: 160px;
+}
 .bar {
   position: absolute;
   top: 0;
@@ -66,4 +94,22 @@ background: #10ccff;
   box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.1);
   border-bottom: solid 1px rgba(0, 50, 255, 0.1)
 }
-
+.name {
+font-size: 50px;
+background: rgba(0,0,0,0.03);
+padding: 15px;
+}
+.block {
+  border: solid 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.05);
+  line-height: 2em;
+  text-align: left;
+   margin-bottom: 40px;
+}
+.text {
+padding: 1em;
+}
+.code {
+  background: rgba(0, 50, 255, 0.1);
+  list-style-type: decimal;
+}

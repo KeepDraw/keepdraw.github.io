@@ -14,10 +14,99 @@
 <a href='start.html'>Get Started</a>
 </div>
 <div class='header' id='col'>
-<p>Coming soon</p>
+<p>Reference</p>
 </div>
 </div>
+<div id='left'>
+<p>Shapes</p>
+<a href='#stage'>Stage</a>
+<a href='#circle'>Circle</a>
+<a href='#line'>Line</a>
+<a href='#rect'>Rect</a>
+<p>Style</p>
+<a href='#color'>color</a>
+<a href='#stroke'>stroke</a>
+<a href='#shadow'>shadow</a>
+<a href='#fill'>fill</a>
+<a href='#opacity'>opacity</a>
+</div>
+<div id='main'>
+<div class='block' id='stage'>
+<div class='name'>
+Stage
+</div>
+<div class='text'>
+Stage - the general element in KeepDraw. <br>
+<ul class='code'>
+<li>var stage = new KeepDraw.Stage({</li>
+<li>width: 300,</li>
+<li>height: 300,</li>
+<li>canvas: 'id',</li>
+<li>fill: '#000'</li>
+<li>});</li>
+</ul>
+</div>
+</div>
+<div class='block' id='circle'>
+<div class='name'>
+Circle
+</div>
+<div class='text'>
+For draw circle you can use this function:<br>
+<ul class='code'>
+<li>var circle = new KeepDraw.Circle({</li>
+<li>x: 50,</li>
+<li>y: 50,</li>
+<li>radius: 50,</li>
+<li>color: '#000',</li>
+<li>stage: stage</li>
+<li>});</li>
+</ul>
+</div>
+</div>
+<div class='block' id='line'>
+<div class='name'>
+Line
+</div>
+<div class='text'>
+For draw line you can use this function:<br>
+<ul class='code'>
+<li>var line = new KeepDraw.Line({</li>
+<li>x: 50,</li>
+<li>y: 50,</li>
+<li>segments: [[0, 0], [50, 50], [0, 0], [50, 50]]</li>
+<li>strokeColor: '#000',</li>
+<li>stage: stage</li>
+<li>});</li>
+</ul>
+</div>
+</div>
+<div class='block' id='rect'>
+<div class='name'>
+Rect
+</div>
+<div class='text'>
+For draw rect you can use this function:<br>
+<ul class='code'>
+<li>var rect = new KeepDraw.Rect({</li>
+<li>x: 50,</li>
+<li>y: 50,</li>
+<li>width: 50,</li>
+<li>height: 50,</li>
+<li>color: '#000',</li>
+<li>stage: stage</li>
+<li>});</li>
+</ul>
+</div>
+</div>
+</div>
+<script>
+var get = function(e) {return document.getElementById(e)};
+document.body.onscroll = function() {
+if (document.body.scrollTop > 300) get('left').style.top = ((document.body.scrollTop - 300) / 1.2) + 'px', get('left').style.position = 'relative'; 
+else get('left').style.position = 'static';
+}
+</script>
 <script src='KeepDraw.js'></script>
-<script src='back.js'></script>
 </body>
 </html>
