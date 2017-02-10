@@ -1,25 +1,155 @@
 <html>
 <head>
-<title>KeepDraw - canvas framework</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset='utf-8'>
+<title>Рисовать онлайн бесплатно рисунки</title>
+<style>
+body {
+color: rgba(255,255,255,0.7);
+margin: 0;
+background: linear-gradient(45deg, rgba(0,175,255,1) 0%, rgba(0,200,255,1) 100%);
+font-size: larger;
+font-family: Ubuntu Light, Segoe UI Light, Arial !important;
+ scroll-behavior: smooth;
+    text-align: center;
+}
+.bar {
+text-align: left;
+width: 100%;
+box-shadow: 0 0 50px 0 rgba(0,0,0,0.1);
+border-bottom: solid 1px rgba(255,255,255,0.1);
+position: fixed;
+background: transparent;
+}
+.bar a {
+text-decoration: none;
+display: inline-block;
+float: right;
+color: rgba(255,255,255,0.7);
+padding: 1em;
+}
+.bar p {
+display: inline-block;
+padding: 1em;
+margin: 0;
+background: rgba(255,255,255,0.1);
+}
+.title {
+    width: 100%;
+    padding-top: 1em;
+    font-size: 3em;
+    padding-bottom: 1em;
+    background: rgba(255,255,255,0.1);
+box-shadow: 0 0 50px 0 rgba(0,0,0,0.1);
+color: rgba(255,255,255,0.7);
+}
+.top {
+    padding-bottom: 2em;
+    padding-top: 2em;
+ background: url(title.png) no-repeat rgba(0,0,0,0.3);
+box-shadow: inset 0 0 150px 0 rgba(0,0,0,0.3), 0 0 50px 0 rgba(0,0,0,0.1);
+background-position-y: 0px;
+}
+.text {
+padding: 20px;
+color: #555;
+}
+#top2 {
+ background: url(title2.png) repeat;
+}
+#top3 {
+ background: url(title4.png) repeat;
+}
+#t1 {
+ background: url(title3.png) repeat rgba(255,255,255,0.9);
+}
+img {
+transition: 0.2s;
+height: 99%;
+}
+#images {
+padding: 0;
+height: 300px;
+background: white;
+}
+.top a {
+text-decoration: none;
+background: rgba(0,0,0,0.3);
+color: rgba(255,255,255,0.7);
+padding: 10px;
+border-radius: 7px;
+}
+.footer {
+    width: 100%;
+    height: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    margin-top: -15px;
+}
+</style>
 </head>
 <body>
-<div class='bar'>
-<a class='title' href='index.html'>KeepDraw</a>
-<a href='KeepDraw.js'>Download</a>
-<a href='tutorials.html'>Tutorials</a>
-<a href='reference.html'>Reference</a>
-<a href='https://github.com/roundraw/roundraw.github.io'>Github</a>
-<a href='examples.html'>Examples</a>
-<a href='start.html'>Get Started</a>
+<div class='bar' id='toolbar'>
+<p>Roundraw</p>
+<a href='draw.html'>Рисовать!</a>
+<a href='#top3'>Рисунки</a>
+<a href='#top2'>Что это?</a>
 </div>
-<div class='header'>
-<p id='head'>KeepDraw - Canvas 2D Framework</p>
-<canvas id='canvas'>
-</canvas>
+<div class='title top' id='top'>Roundraw - рисовать онлайн бесплатно</div>
+<div class='title' id='top2'>Что это?</div>
+<div class='text' id='t1'>
+<h1>Roundraw - это векторный редактор изображений онлайн.</h1> Здесь вы можете рисовать онлайн бесплатно, заливать, перемещать, изменять и удалять фигуры. Рисунок сохраняется на экране даже при перезагрузке страницы. Так же, вы можете скачать рисунок нажатием одной кнопки. 
+<h1>Отличия от других онлайн-редакторов:<h1>
+<h2>Векторный</h2> - Вы можете выделить любую фигуру и изменить ее;
+<h2>Тень</h2> - Можно присвоить тень любой фигуре;
+<h2>Сглаживание</h2> - Имеется автоматическое сглаживание линий;
+<h2>Бесплатный</h2> - Можно рисовать онлайн бесплатно, без регистрации;
+<h2>Заливка</h2> - Умная заливка зальет фигуру, которую вы выделили.
+<h2>Изображения</h2> - Возможно залить фигуру изображением.
 </div>
+<div class='title' id='top3'>Примеры рисунков</div>
+<div class='text' id='images'>
+<img src='i3.jpg' alt='Курица, нарисованная в Roundraw'></img>
+<img src='i1.jpg' alt='Кот Вжух, нарисованный в Roundraw'></img>
+<img src='i2.jpg' alt='Пушистая белка, нарисованная в Roundraw'></img>
 </div>
-<script src='KeepDraw.js'></script>
-<script src='back.js'></script>
+<div class='title top'><a href='draw.html'>Начать рисовать!</a></div>
+<div class='footer'>
+<script type="text/javascript">
+document.write("<a href='//www.liveinternet.ru/click' "+
+"target=_blank><img src='//counter.yadro.ru/hit?t26.11;r"+
+escape(document.referrer)+((typeof(screen)=="undefined")?"":
+";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
+screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
+";"+Math.random()+
+"' alt='' title='LiveInternet: показано число посетителей за"+
+" сегодня' "+
+"border='0' width='88' height='15'><\/a>")
+</script>
+</div>
 </body>
+<script>
+var get = function(e) {return document.getElementById(e)};
+document.body.onscroll = function() {
+get('top').style.backgroundPositionY = (document.body.scrollTop / 1.5) + 'px';
+get('top2').style.backgroundPositionY = get('top3').style.backgroundPositionY = (document.body.scrollTop / 2) + 'px';
+get('t1').style.backgroundPositionY = (document.body.scrollTop / 2.5) + 'px';
+var col = document.body.scrollTop / document.body.offsetHeight;
+get('toolbar').style.background = 'rgba(0,0,0,' + (col - 0.1) + ')';
+}
+</script>
+    <script>
+        (function(i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function() {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-88405053-1', 'auto');
+        ga('send', 'pageview');
+    </script>
 </html>
