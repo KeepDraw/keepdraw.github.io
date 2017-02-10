@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Roundraw - онлайн-редактор рисунков</title>
+    <meta name='keywords'>рисовалка, игра, рисовать, онлайн, рисование, программа, нарисовать, редактор, фото, фотография, рисунок, программа</meta>
+    <meta name='description'>Создавайте рисунки и редактируйте фото онлайн</meta>
+    <meta name="yandex-verification" content="336fc51d93ccf53f" />
+    <meta charset='utf-8'>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <canvas id='main'></canvas>
+    <div id='panel'>
+        <div id='tabs' class='tab'>
+            <a style='background: url(img/colors.svg) no-repeat 50%' onclick="get('colors').classList.toggle('ctab')"></a>
+            <a style='background: url(img/sizes.svg) no-repeat 50%' onclick="get('sizes').classList.toggle('ctab')"></a>
+            <a style='background: url(img/imgset.svg) no-repeat 50%' onclick="get('imgsets').classList.toggle('ctab')"></a>
+            <a style='background: url(img/seg.svg) no-repeat 50%' onclick="get('segs').classList.toggle('ctab')"></a>
+        </div>
+
+        <a id='toLeft' onclick="get('panel').classList.toggle('right'), get('toLeft').classList.toggle('flip');">
+        </a>
+        <div id='colors' class='tab'>
+            <input id='r' max="255" min="0" oninput='change(this, 0)' type='range' value="0">
+            <div id='red'>
+                <input max='255' min='0' onchange='change(this, 0)' type='number' value='0'>
+            </div>
+            <input id='g' max="255" min="0" oninput='change(this, 1)' type='range' value="0">
+            <div id='green'>
+                <input max='255' min='0' onchange='change(this, 1)' type='number' value='0'>
+            </div>
+            <input id='b' max="255" min="0" oninput='change(this, 2)' type='range' value="0">
+            <div id='blue'>
+                <input max='255' min='0' onchange='change(this, 2)' type='number' value='0'>
+            </div>
+            <input id='o' max="1" step="0.01" min="0" type='range' value="1" oninput='change(this, 3)' type='range'>
+            <div id='opacity'>
+                <input max='1' min='0' onchange='change(this, 3)' type='number' value='0'>
+            </div>
+            <input id='sf' max="2" min="0" type='range' value="0">
+            <div id='stroke'>
+                <a>0</a>
+            </div>
+        </div>
+        <div id='sizes' class='tab'>
+            <input id='c' max="2" min="0" type='range' value="0">
+            <div id='cap'>
+                <a>0</a>
+            </div>
+            <input id='sh' max="100" min="0" type='range' value="0">
+            <div id='shadow'>
+                <input min='0' onchange='change(this, "sh");' type='number' value='0'>
+            </div>
+            <input id='strw' max="100" min="0" type='range' value="0">
+            <div id='strwidth'>
+                <input min='0' onchange='change(this, "w");' type='number' value='0'>
+            </div>
+            <input id='sm' max="5" step="0.1" min="0.01" type='range' value="0">
+            <div id='smooth'>
+                <input min='0' onchange='change(this, "sm");' type='number' value='0'>
+            </div>
+        </div>
+        <div id='imgsets' class='tab'>
+            <a id='imstyle'>
+                <input type="file" id='import' />
+            </a>
+            <input id='iw' max="1000" min="0" type='range' value="0">
+            <div id='imgwidth'>
+                <input min='0' onchange='change(this, "iw");' type='number' value='500'>
+            </div>
+            <input id='ih' max="500" min="-500" type='range' value="0">
+            <div id='imgheight'>
+                <input min='0' onchange='change(this, "ih");' type='number' value='500'>
+            </div>
+            <input id='ix' max="500" min="-500" type='range' value="0">
+            <div id='imgx'>
+                <input min='0' onchange='change(this, "ix");' type='number' value='250'>
+            </div>
+            <input id='iy' max="500" min="-500" type='range' value="0">
+            <div id='imgy'>
+                <input min='0' onchange='change(this, "iy");' type='number' value='-250'>
+            </div>
+        </div>
+        <div id='segs' class='tab'>
+            <input id='xc' max="1000" min="0" type='range' value="0">
+            <div id='x'>
+                <input min='0' onchange='change(this, "x");' type='number' value='0'>
+            </div>
+            <input id='yc' max="1000" min="0" type='range' value="0">
+            <div id='y'>
+                <input min='0' onchange='change(this, "y");' type='number' value='0'>
+            </div>
+            <input id='wc' max="1000" min="0" type='range' value="0">
+            <div id='width'>
+                <input min='0' onchange='change(this, "width");' type='number' value='0'>
+            </div>
+            <input id='hc' max="1000" min="0" type='range' value="0">
+            <div id='height'>
+                <input min='0' onchange='change(this, "height");' type='number' value='0'>
+            </div>
+        </div>
+<script type="text/javascript">
+document.write("<a href='//www.liveinternet.ru/click' "+
+"target=_blank><img src='//counter.yadro.ru/hit?t26.11;r"+
+escape(document.referrer)+((typeof(screen)=="undefined")?"":
+";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
+screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
+";"+Math.random()+
+"' alt='' title='LiveInternet: показано число посетителей за"+
+" сегодня' "+
+"border='0' width='88' height='15'><\/a>")
+</script>
+    </div>
+    <div class='bar' id='toolbar'>
+        <a id='toTop' onclick="get('toolbar').classList.toggle('top'), get('toTop').classList.toggle('flip');" style='background-image: url(img/openTop.svg)'></a>
+        <a id='5' onclick='setBrush(5)' style='background-image: url(img/cursor.svg)'></a>
+        <a id='6' onclick='setBrush(6)' style='background-image: url(img/easer.svg)'></a>
+        <a id='7' onclick='setBrush(7)' style='background-image: url(img/pointer.svg)'></a>
+        <a id='8' onclick='setBrush(8)' style='background-image: url(img/fill.svg)'></a>
+        <a id='0' onclick='setBrush(0)' style='background-image: url(img/pencil.svg)'></a>
+        <a id='1' onclick='setBrush(1)' style='background-image: url(img/line.svg)'></a>
+        <a id='2' onclick='setBrush(2)' style='background-image: url(img/circle.svg)'></a>
+        <a id='3' onclick='setBrush(3)' style='background-image: url(img/polygon.svg)'></a>
+        <a id='4' onclick='setBrush(4)' style='background-image: url(img/rect.svg)'></a>
+        <a id='save' onclick='save()' download='image.png' style='background-image: url(img/save.svg)'></a>
+        <a id='back' onclick='back()' style='background-image: url(img/back.svg)'></a>
+        <a id='forward' onclick='forward()' style='background-image: url(img/forward.svg)'></a>
+        <a id='keys' onclick='' href="help.html" style='background-image: url(img/keys.svg)'></a>
+        <a id='color'></a>
+    </div>
+    <script>
+        (function(i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function() {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-88405053-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+<script>
+    (function (w, d, c) {
+    (w[c] = w[c] || []).push(function() {
+        var options = {
+            project: 4465956
+        };
+        try {
+            w.top100Counter = new top100(options);
+        } catch(e) { }
+    });
+    var n = d.getElementsByTagName("script")[0],
+    s = d.createElement("script"),
+    f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src =
+    (d.location.protocol == "https:" ? "https:" : "http:") +
+    "//st.top100.ru/top100/top100.js";
+
+    if (w.opera == "[object Opera]") {
+    d.addEventListener("DOMContentLoaded", f, false);
+} else { f(); }
+})(window, document, "_top100q");
+</script>
+    <script src='KeepDraw.js'></script>
+    <script src='js/script.js'></script>
+    </form>
+</body>
+
+</html>
