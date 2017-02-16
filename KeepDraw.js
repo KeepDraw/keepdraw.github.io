@@ -47,8 +47,8 @@
          for (var i = 0; i < arg.childs.length; i++) {
            if (arg.childs[i]) ch.push(arg.childs[i]);
          }
-         stage.childs = ch;
-         stage.setIndex();
+         arg.childs = ch;
+         arg.setIndex();
        }
      },
      lineDraw: function(arg, point) {
@@ -157,21 +157,23 @@
      },
      setFuncs: function(obj) {
        var seg = obj._segments || obj.segments;
-       obj.rotate = function(deg) {
+       obj.rotate = function(deg, rx, ry) {
+         rx = rx || 0;
+         ry = ry || 0;
          deg = deg * Math.PI / 180;
          for (var i = 0; i < seg.length; i++) {
-           var x = seg[i][0] * Math.cos(deg) - seg[i][1] * Math.sin(deg);
-           var y = seg[i][0] * Math.sin(deg) + seg[i][1] * Math.cos(deg);
-           seg[i][0] = x, seg[i][1] = y;
+           var x = (seg[i][0] - rx) * Math.cos(deg) - (seg[i][1] - ry) * Math.sin(deg);
+           var y = (seg[i][0] - rx) * Math.sin(deg) + (seg[i][1] - ry) * Math.cos(deg);
+           seg[i][0] = x + rx, seg[i][1] = y + ry;
            if (seg[i][3]) {
-             var x = seg[i][2] * Math.cos(deg) - seg[i][3] * Math.sin(deg);
-             var y = seg[i][2] * Math.sin(deg) + seg[i][3] * Math.cos(deg);
-             seg[i][2] = x, seg[i][3] = y;
+             var x = (seg[i][2] - rx) * Math.cos(deg) - (seg[i][3] - ry) * Math.sin(deg);
+             var y = (seg[i][2] - rx) * Math.sin(deg) + (seg[i][3] - ry) * Math.cos(deg);
+             seg[i][2] = x + rx, seg[i][3] = y + ry;
            }
            if (seg[i][5]) {
-             var x = seg[i][4] * Math.cos(deg) - seg[i][5] * Math.sin(deg);
-             var y = seg[i][4] * Math.sin(deg) + seg[i][5] * Math.cos(deg);
-             seg[i][4] = x, seg[i][5] = y;
+             var x = (seg[i][4] - rx) * Math.cos(deg) - (seg[i][5] - ry) * Math.sin(deg);
+             var y = (seg[i][4] - rx) * Math.sin(deg) + (seg[i][5] - ry) * Math.cos(deg);
+             seg[i][4] = x + rx, seg[i][5] = y + ry;
            }
          }
        };
@@ -392,7 +394,7 @@
        };
        this.draw(this);
      }
-	this.cons = KeepDraw.Rect;
+     this.cons = KeepDraw.Rect;
      if (arg.stage) {
        this.index = arg.stage.childs.length;
        arg.stage.childs.push(this);
