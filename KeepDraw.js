@@ -158,22 +158,22 @@
      setFuncs: function(obj) {
        var seg = obj._segments || obj.segments;
        obj.rotate = function(deg, rx, ry) {
-         rx = rx || 0;
-         ry = ry || 0;
+rx = rx || 0;
+ry = ry || 0;
          deg = deg * Math.PI / 180;
          for (var i = 0; i < seg.length; i++) {
            var x = (seg[i][0] - rx) * Math.cos(deg) - (seg[i][1] - ry) * Math.sin(deg);
            var y = (seg[i][0] - rx) * Math.sin(deg) + (seg[i][1] - ry) * Math.cos(deg);
            seg[i][0] = x + rx, seg[i][1] = y + ry;
            if (seg[i][3]) {
-             var x = (seg[i][2] - rx) * Math.cos(deg) - (seg[i][3] - ry) * Math.sin(deg);
-             var y = (seg[i][2] - rx) * Math.sin(deg) + (seg[i][3] - ry) * Math.cos(deg);
-             seg[i][2] = x + rx, seg[i][3] = y + ry;
+           var x = (seg[i][2] - rx) * Math.cos(deg) - (seg[i][3] - ry) * Math.sin(deg);
+           var y = (seg[i][2] - rx) * Math.sin(deg) + (seg[i][3] - ry) * Math.cos(deg);
+           seg[i][2] = x + rx, seg[i][3] = y + ry;
            }
            if (seg[i][5]) {
-             var x = (seg[i][4] - rx) * Math.cos(deg) - (seg[i][5] - ry) * Math.sin(deg);
-             var y = (seg[i][4] - rx) * Math.sin(deg) + (seg[i][5] - ry) * Math.cos(deg);
-             seg[i][4] = x + rx, seg[i][5] = y + ry;
+           var x = (seg[i][4] - rx) * Math.cos(deg) - (seg[i][5] - ry) * Math.sin(deg);
+           var y = (seg[i][4] - rx) * Math.sin(deg) + (seg[i][5] - ry) * Math.cos(deg);
+           seg[i][4] = x + rx, seg[i][5] = y + ry;
            }
          }
        };
@@ -256,7 +256,7 @@
          }
          obj.segments = seg2;
        };
-       obj.endPoints = KeepDraw.Utils.endPoints;
+       obj.endPoints = function() { return KeepDraw.Utils.endPoints(obj) };
        obj.inScreen = function() {
          if ((obj._x || obj.x) > 0 && (obj._x || obj.x) < innerWidth && (obj._y || obj.y) > 0 && (obj._y || obj.y) < innerHeight) return true;
          else return false;
@@ -265,6 +265,10 @@
          if (obj.x > minX && obj.x < maxX && obj.y > minY && obj.y < maxY) return true;
          else return false;
        };
+	obj.center = function() {
+  	var p = obj.endPoints();
+  	return [(p[2][0]+p[3][0])/2, (p[0][1]+p[1][1])/2];
+	}
        if (obj.group) {
          obj.group.childs.push(obj);
        }
@@ -394,7 +398,7 @@
        };
        this.draw(this);
      }
-     this.cons = KeepDraw.Rect;
+	this.cons = KeepDraw.Rect;
      if (arg.stage) {
        this.index = arg.stage.childs.length;
        arg.stage.childs.push(this);
