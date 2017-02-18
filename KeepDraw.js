@@ -74,8 +74,8 @@
            for (var i = 0; i < seg.length; i++) {
              seg[i][0] *= w;
              seg[i][1] *= h;
-             if (seg[i][3]) seg[i][2] *= w, seg[i][3] *= h;
-             if (seg[i][5]) seg[i][4] *= w, seg[i][5] *= h;
+             if (isFinite(seg[i][3])) seg[i][2] *= w, seg[i][3] *= h;
+             if (isFinite(seg[i][5])) seg[i][4] *= w, seg[i][5] *= h;
            }
          }
          for (var i = 1; i < seg.length; i++) {
@@ -165,12 +165,12 @@ ry = ry || 0;
            var x = (seg[i][0] - rx) * Math.cos(deg) - (seg[i][1] - ry) * Math.sin(deg);
            var y = (seg[i][0] - rx) * Math.sin(deg) + (seg[i][1] - ry) * Math.cos(deg);
            seg[i][0] = x + rx, seg[i][1] = y + ry;
-           if (seg[i][3]) {
+           if (isFinite(seg[i][3])) {
            var x = (seg[i][2] - rx) * Math.cos(deg) - (seg[i][3] - ry) * Math.sin(deg);
            var y = (seg[i][2] - rx) * Math.sin(deg) + (seg[i][3] - ry) * Math.cos(deg);
            seg[i][2] = x + rx, seg[i][3] = y + ry;
            }
-           if (seg[i][5]) {
+           if (isFinite(seg[i][5])) {
            var x = (seg[i][4] - rx) * Math.cos(deg) - (seg[i][5] - ry) * Math.sin(deg);
            var y = (seg[i][4] - rx) * Math.sin(deg) + (seg[i][5] - ry) * Math.cos(deg);
            seg[i][4] = x + rx, seg[i][5] = y + ry;
@@ -530,12 +530,12 @@ ry = ry || 0;
            var x = seg[i][0] * Math.cos(deg) - seg[i][1] * Math.sin(deg);
            var y = seg[i][0] * Math.sin(deg) + seg[i][1] * Math.cos(deg);
            seg[i][0] = x, seg[i][1] = y;
-           if (seg[i][3]) {
+           if (isFinite(seg[i][3])) {
              var x = seg[i][2] * Math.cos(deg) - seg[i][3] * Math.sin(deg);
              var y = seg[i][2] * Math.sin(deg) + seg[i][3] * Math.cos(deg);
              seg[i][2] = x, seg[i][3] = y;
            }
-           if (seg[i][5]) {
+           if (isFinite(seg[i][5])) {
              var x = seg[i][4] * Math.cos(deg) - seg[i][5] * Math.sin(deg);
              var y = seg[i][4] * Math.sin(deg) + seg[i][5] * Math.cos(deg);
              seg[i][4] = x, seg[i][5] = y;
