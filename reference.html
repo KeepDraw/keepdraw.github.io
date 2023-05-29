@@ -36,7 +36,7 @@
 Stage
 </div>
 <div class='text'>
-Stage - the general element in KeepDraw. <br>
+Keepdraw.Stage - is the main element of KeepDraw Framework. It contains all other elements, and tweens. Each other element requires link to name of container stage, which specified in object property "stage" <br>
 <ul class='code'>
 <li>var stage = new KeepDraw.Stage({</li>
 <li>width: 300,</li>
@@ -52,7 +52,7 @@ Stage - the general element in KeepDraw. <br>
 Circle
 </div>
 <div class='text'>
-For draw circle you can use this function:<br>
+Circle - is a constructor for drawing circles. It`s doesn`t supports ellipses. You need to specify center coordinates of a circle, and it`s radius.<br>
 <ul class='code'>
 <li>var circle = new KeepDraw.Circle({</li>
 <li>x: 50,</li>
@@ -69,7 +69,7 @@ For draw circle you can use this function:<br>
 Line
 </div>
 <div class='text'>
-For draw line you can use this function:<br>
+KeepDraw.Line - with this constrictor you can draw lines with multiple segments, quadratic and bezier curves.<br> Segment subarray can be in 3 states:<br> For curve [x, y]; <br>For quadratic curve: [x, y, center x, center y];<br>For bezier curve: [x, y, previous center x, previous center y, next center x, next center y]<br> 
 <ul class='code'>
 <li>var line = new KeepDraw.Line({</li>
 <li>x: 50,</li>
@@ -86,7 +86,7 @@ For draw line you can use this function:<br>
 Rect
 </div>
 <div class='text'>
-For draw rect you can use this function:<br>
+Keepdraw.Rect - use this constructor for drawing rectangles through specifying it`s width and height.<br>
 <ul class='code'>
 <li>var rect = new KeepDraw.Rect({</li>
 <li>x: 50,</li>
@@ -94,6 +94,24 @@ For draw rect you can use this function:<br>
 <li>width: 50,</li>
 <li>height: 50,</li>
 <li>color: '#000',</li>
+<li>stage: stage</li>
+<li>});</li>
+</ul>
+</div>
+</div>
+  <div class='block' id='polygon'>
+<div class='name'>
+Regular polygon
+</div>
+<div class='text'>
+KeepDraw.Polygon - you can use this constructor for drawing regular polygons. You should specify radius and number of sides.
+<ul class='code'>
+<li>var polygon = new KeepDraw.Polygon({</li>
+<li>x: 50,</li>
+<li>y: 50,</li>
+<li>radius: 50</li>
+<li>sides: 5</l>  
+<li>strokeColor: '#000',</li>
 <li>stage: stage</li>
 <li>});</li>
 </ul>
